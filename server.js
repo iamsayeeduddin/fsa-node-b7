@@ -1,27 +1,23 @@
-const http = require("http");
-const userData = require("./data.json");
+const express = require("express");
+const app = express();
+const data = require("./data.json");
 
-const data = ["Book1", "Book2", "Book3"];
+// const data = ["Book1", "Book2", "Book3"];
 
-const PORT = process.env.PORT || 5000;
+app.listen(5000, () => console.log("Server Up & Running!"));
 
-function ctrl(req, res) {
-  switch (req.url) {
-    case "/":
-      res.writeHead(200);
-      res.write("Welcome to My API!");
-      break;
+app.use("/users", (req, res) => {
+  res.status(200).json(data);
+});
 
-    case "/books":
-      res.writeHead(JSON.stringify(data));
-      res.write("Welcome to My API!");
-      break;
+app.use("/", (req, res) => {
+  res.status(200);
+  res.send("Welcome to My API");
+});
 
-    default:
-      res.writeHead(404);
-      break;
-  }
-  res.end();
-}
-
-http.createServer(ctrl).listen(PORT);
+// CRUD -> Create, Read, Update & Delete
+// Request Methods
+// GET - Read Data
+// POST - Create Data ->  Request to Read Data
+// PUT & PATCH -> Update
+// DELETE - Deletes the Data
