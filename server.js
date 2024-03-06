@@ -20,7 +20,7 @@ const data = [
 ];
 
 app.listen(5000, () => console.log("Server Up & Running!"));
-
+app.use(express.json());
 // app.use("/users", (req, res) => {
 //   res.status(200).json(userData);
 // });
