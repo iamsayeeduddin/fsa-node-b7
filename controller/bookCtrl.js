@@ -19,9 +19,14 @@ const get = (req, res) => {
 };
 
 const getById = (req, res) => {
-  const { id } = req.params;
-  const book = data.find((val) => val.id === parseInt(id));
-  res.status(200).json(book);
+  try {
+    const { id } = req.params;
+    const book = data.find((val) => val.id === parseInt(id));
+    if (book) res.status(200).json(book);
+    else throw "Book Not Found";
+  } catch (e) {
+    res.status(404).send(e);
+  }
 };
 
 const addBook = (req, res) => {
@@ -58,3 +63,16 @@ module.exports = {
   deleteBook,
   updateBook,
 };
+
+/// MongoDB
+// DB Server
+// databses
+// collections
+
+// FSA
+// Courses
+// Batches
+//_id
+// Alumni
+// Trainers
+/// Course: "87fcs8csgdb8ws8dgfbsdcsydvcb"
