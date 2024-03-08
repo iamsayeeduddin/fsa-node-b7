@@ -1,26 +1,24 @@
 const express = require("express");
-const app = express();
 const userData = require("./data.json");
 const defaultRoute = require("./routes/defaultRoute");
 const bookRoute = require("./routes/bookRoute");
+const courseRoute = require("./routes/courseRoute");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
-const data = [
-  {
-    id: 1,
-    name: "HTML & CSS Projects",
-    price: 500,
-    inStock: true,
-  },
-  {
-    id: 2,
-    name: "JavaScript",
-    price: 800,
-    inStock: false,
-  },
-];
+const app = express();
+dotenv.config();
 
 app.listen(5000, () => console.log("Server Up & Running!"));
+
+mongoose
+  .connect(process.env.DB_URL)
+  // .connect("mongodb://127.0.0.1:27017/fsa")
+  .then((res) => console.log("DB COnnected"))
+  .catch((err) => console.log(err));
+
 app.use(express.json());
+
 // app.use("/users", (req, res) => {
 //   res.status(200).json(userData);
 // });
@@ -37,6 +35,7 @@ app.use(express.json());
 
 app.use("/", defaultRoute);
 app.use("/books", bookRoute);
+app.use("/courses", courseRoute);
 
 // CRUD -> Create, Read, Update & Delete
 // Request Methods
