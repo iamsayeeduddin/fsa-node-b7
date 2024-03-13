@@ -35,8 +35,48 @@ const getCourse = async (req, res) => {
   }
 };
 
+// PUT - FULL UPDATE
+// PATCH - PARTIAL UPDATE
+const putCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+    const course = await courseRepo.updateCourse(id, data);
+    res.status(204).send("Updated");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+const patchCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+    await courseRepo.patch(id, data);
+    res.status(204).send("Updated");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+const remove = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await courseRepo.deleteCourse(id);
+    res.status(204).send("DELETED");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 module.exports = {
   getAllCourses,
   createCourse,
   getCourse,
+  putCourse,
+  patchCourse,
+  remove,
 };
