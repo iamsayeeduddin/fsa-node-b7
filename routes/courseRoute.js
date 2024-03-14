@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", courseCtrl.getAllCourses);
+router.get("/page/:page/size/:pageSize", courseCtrl.getAllCourses);
 router.get("/:id", courseCtrl.getCourse);
 router.post("/create", courseCtrl.createCourse);
 router.put("/update/:id", courseCtrl.putCourse);

@@ -6,6 +6,7 @@ const courseSchema = mongoose.Schema({
   duration: { type: String, required: true },
   rating: { type: Number, required: true },
   isActive: { type: Boolean, default: true },
+  price: { type: Number, required: true },
   createdAt: { type: Date, required: true },
   updatedAt: { type: Date, default: Date.now },
 });

@@ -1,10 +1,43 @@
 const Course = require("../models/courseModel");
 const courseRepo = require("../repositories/courseRepo");
 
+// Total Records = 105
+// PageSize = 10
+// Pages = 11
+// 1 -> 1 - 10 - 0 ((page - 1) * pageSize)
+// 2 -> 11- 20 - 10
+// 3 -> 21 -30 - 20
+
+const getOptions = (req) => {
+  var sort = req.query.sort || "updateAt";
+  var dir = req.query.dir || "desc";
+  var search = req.query.search || "";
+  const pageSize = +req.params.pageSize || 10;
+  const page = +req.params.page || 1;
+  let skip = (page - 1) * pageSize;
+  return {
+    skip,
+    pageSize,
+    sort,
+    dir,
+    search,
+  };
+};
+
 const getAllCourses = async (req, res) => {
   try {
-    const courses = await courseRepo.get();
-    res.status(200).json(courses);
+    const options = getOptions(req);
+    const courses = await courseRepo.get(options);
+    let totalRecords = await courseRepo.getCount(options);
+    let totalPages = Math.ceil(totalRecords / options.pageSize);
+    let response = {
+      metadata: {
+        totalPages,
+        totalRecords,
+      },
+      data: courses,
+    };
+    res.status(200).json(response);
   } catch (e) {
     console.log(e);
     res.status(500).send("Internal Server Error");

@@ -1,7 +1,22 @@
 const CourseModel = require("../models/courseModel");
 
-const get = () => {
-  return CourseModel.find();
+const get = (options) => {
+  const { skip, pageSize, sort, dir, search } = options;
+  let filter = {};
+  if (search) {
+    filter = {
+      $or: [{ name: { $regex: search, $options: "i" } }, { duration: { $regex: search, $options: "i" } }],
+    };
+  }
+
+  return CourseModel.find(filter, { _v: 0 })
+    .sort({ [sort]: dir })
+    .skip(skip)
+    .limit(pageSize);
+};
+
+const getCount = (options) => {
+  return CourseModel.countDocuments();
 };
 
 const updateCourse = (id, data) => {
@@ -29,4 +44,5 @@ module.exports = {
   updateCourse,
   patch,
   deleteCourse,
+  getCount,
 };
