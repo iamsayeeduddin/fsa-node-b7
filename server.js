@@ -43,3 +43,5 @@ app.use("/courses", courseRoute);
 // POST - Create Data ->  Request to Read Data
 // PUT & PATCH -> Update
 // DELETE - Deletes the Data
+
+/// LOGGING
