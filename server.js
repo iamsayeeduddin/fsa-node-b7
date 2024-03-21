@@ -34,6 +34,9 @@ app.use(express.json());
 // });
 
 app.use("/", defaultRoute);
+app.use("/users", require("./routes/userRoute"));
+
+// AUTHENTICATED
 app.use("/books", bookRoute);
 app.use("/courses", courseRoute);
 
@@ -45,3 +48,4 @@ app.use("/courses", courseRoute);
 // DELETE - Deletes the Data
 
 /// LOGGING
+// AUTHORIZATION & AUTHENTICATION
