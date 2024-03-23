@@ -32,8 +32,26 @@ app.use(express.json());
 //   res.status(200);
 //   res.send("Welcome to My API");
 // });
+const middle = (req, res, next) => {
+  console.log("Inside Middleware");
+  if (req.headers.authorization) {
+    const authHeader = req.headers.authorization;
+    const token = authHeader.split(" ")[1];
+    let buff = new Buffer(token, "base64");
+    let decoded = buff.toString("utf-8");
+    let username = decoded.split(":")[0];
+    let password = decoded.split(":")[1];
+    console.log(username, password);
+    if (username === "admin" && password === "pass") {
+      next();
+    } else {
+      res.status(401).send("Unauthorized");
+    }
+  } else res.status(401).send("Unauthorized");
+};
 
-app.use("/", defaultRoute);
+// app.use(mid);
+app.use("/", middle, defaultRoute);
 app.use("/users", require("./routes/userRoute"));
 
 // AUTHENTICATED
@@ -49,3 +67,5 @@ app.use("/courses", courseRoute);
 
 /// LOGGING
 // AUTHORIZATION & AUTHENTICATION
+
+// Token Based - Email Password
