@@ -10,7 +10,7 @@ const get = () => {
 };
 
 const getByEmail = (email) => {
-  return UserModel.findOne({ email }, { email: 1, password: 1, name: 1 });
+  return UserModel.findOne({ email }, { email: 1, password: 1, name: 1, role: 1 });
 };
 
 module.exports = { post, get, getByEmail };

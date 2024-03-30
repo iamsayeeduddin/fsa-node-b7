@@ -33,7 +33,8 @@ const signin = async (req, res) => {
       const correct = await comparePass(password, user.password);
       if (correct) {
         delete user.password;
-        const token = generateToken({ email: user.email, name: user.name });
+        console.log(user);
+        const token = generateToken({ email: user.email, name: user.name, role: user.role });
         res.status(200);
         res.json({
           message: "Login Successfull!",

@@ -19,7 +19,7 @@ const middle = (req, res, next) => {
 };
 
 const generateToken = (payload) => {
-  return jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 60 });
+  return jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 300 });
 };
 
 const verifyToken = (req, res, next) => {
@@ -30,6 +30,7 @@ const verifyToken = (req, res, next) => {
       res.status(401).send("Unauthorized!");
     } else {
       const response = jwt.verify(token, process.env.SECRET_KEY);
+      req.role = response.role;
       if (response) {
         next();
       } else {
@@ -41,8 +42,18 @@ const verifyToken = (req, res, next) => {
   }
 };
 
+const authorizeSA = (req, res, next) => {
+  const role = req.role;
+  if (parseInt(role) === 0) {
+    next();
+  } else {
+    res.status(403).send("Forbidden");
+  }
+};
+
 module.exports = {
   middle,
   generateToken,
   verifyToken,
+  authorizeSA,
 };
